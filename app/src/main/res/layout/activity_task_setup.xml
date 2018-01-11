@@ -8,6 +8,12 @@
     tools:context="com.example.yl.c1_hack.TaskSetupActivity">
 
     <Button
+        android:id="@+id/create_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create New Task"/>
+
+    <Button
         android:id="@+id/home_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
