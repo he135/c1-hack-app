@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setTitle("Overview");
+        getSupportActionBar().setTitle("Overview"); //hi what's up
 
         findViewById(R.id.task_button).setOnClickListener(new View.OnClickListener() {
             @Override
