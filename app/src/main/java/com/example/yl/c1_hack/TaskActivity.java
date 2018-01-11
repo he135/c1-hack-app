@@ -39,6 +39,9 @@ public class TaskActivity extends AppCompatActivity {
                 }
 
                 Task item = new Task(name, descript, Double.parseDouble(value));
+
+                Data.tasks.add(item);
+
                 //return Task
                 Intent intent = new Intent(TaskActivity.this, TaskSetupActivity.class);
                 startActivity(intent);
