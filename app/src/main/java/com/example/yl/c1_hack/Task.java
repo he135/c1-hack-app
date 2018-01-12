@@ -12,6 +12,8 @@ public class Task {
     private static int counter = 0;
     private int id;
 
+    public Task() {}
+
     public Task(String taskName, String descript, double val) {
         name = taskName;
         description = descript;

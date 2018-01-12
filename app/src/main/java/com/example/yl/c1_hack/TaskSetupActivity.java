@@ -16,8 +16,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,22 @@ public class TaskSetupActivity extends AppCompatActivity {
                 Intent intent = new Intent(TaskSetupActivity.this, MainActivity.class);
                 startActivity(intent);
             }
+        });
+
+        DatabaseReference ref = db.getReference("tasks");
+        final List<Task> data = new ArrayList<>();
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+
+                    Task tsk = snap.getValue(Task.class);
+                    data.add(tsk);
+                }
+                Data.changeTasks(data);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) { }
         });
 
         /*findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
@@ -69,28 +88,22 @@ public class TaskSetupActivity extends AppCompatActivity {
         super.onResume();
 
         //TODO: update data
-        DatabaseReference ref = db.getReference();
+        DatabaseReference ref = db.getReference("tasks");
         final List<Task> data = new ArrayList<>();
-        /*ref.addValueEventListener(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                /*for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    String name = (String) messageSnapshot.child("name").getValue();
-                    String message = (String) messageSnapshot.child("message").getValue();
-                }
+                for (DataSnapshot snap: dataSnapshot.getChildren()) {
 
-                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                    if (messageSnapshot.getValue(Task.class) != null) {
-                        Task tsk = messageSnapshot.getValue(Task.class);
-                        data.add(tsk);
-                    }
+                    Task tsk = snap.getValue(Task.class);
+                    data.add(tsk);
                 }
                 Data.changeTasks(data);
             }
 
             @Override
             public void onCancelled(DatabaseError error) { }
-        });*/
+        });
 
         TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
         ListView listView = (ListView) findViewById(R.id.list_task);
