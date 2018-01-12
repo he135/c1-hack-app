@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,11 +25,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class Child_List extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
-//    private static final String TAG = "MainActivity";
+    TaskSetupActivity.TaskAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +39,40 @@ public class Child_List extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Task List");
 
+        ListView listView = (ListView) findViewById(R.id.list_task);
+        TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
+        listView.setAdapter(adapter);
         //weird bug, doesn't show data on first startup
         DatabaseReference ref = db.getReference("tasks");
         final List<Task> data = new ArrayList<>();
-        ref.addValueEventListener(new ValueEventListener() {
+        ref.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()) {
-                    Task tsk = snap.getValue(Task.class);
-                    if (tsk.getStatus() < 2) {
-                        data.add(tsk);
-                    }
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                Task temp = snapshot.getValue(Task.class);
+                if(temp.getStatus()<2){
+                    data.add(temp);
                 }
                 Data.changeTasks(data);
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }
@@ -65,55 +84,6 @@ public class Child_List extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.list_task);
         listView.setAdapter(adapter);
     }
-
-//    public void completeTask(View view) {
-//        View parent = (View) view.getParent();
-//        TextView title = (TextView) parent.findViewById(R.id.task_title);
-//        TextView tview = (TextView) parent.findViewById(R.id.task_complete);
-//        Button btn = (Button) parent.findViewById(R.id.task_complete);
-//
-//        //no undo button
-//        if (btn.getText().toString().equals("Mark as Complete")) {
-//            //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child_overview's account'
-//            btn.setText("Completed");
-//            btn.setEnabled(false);
-//            ListView listView = (ListView) findViewById(R.id.list_task);
-//            title.setPaintFlags(tview.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//            //update status
-//            final int position = listView.getPositionForView(parent);
-//            Task tsk = Data.tasks.get(position);
-//            tsk.updateStatus(2);
-//            try {
-//                db.getReference("tasks").child("" + tsk.getId()).child("status").setValue(tsk.getStatus());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            //title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-//        } else {
-//            //don't do anything, can't undo completed
-//        }
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.main_menu, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.action_add_task:
-//                Log.d(TAG, "Add a new task");
-//                Intent intent = new Intent(Child_List.this, ChildActivity.class);
-//                startActivity(intent);
-//                return true;
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     public class TaskAdapter extends ArrayAdapter<Task> {
         public TaskAdapter(Context context, List<Task> tasks) {
