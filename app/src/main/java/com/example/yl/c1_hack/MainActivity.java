@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseReference ref = db.getReference("tasks");
         final List<Task> data = new ArrayList<>();
+
         /*ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -61,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Task temp = dataSnapshot.getValue(Task.class);
-                data.add(temp);
+                if(!Data.tasks.contains(temp)) {
+                    data.add(temp);
+                }
                 Data.changeTasks(data);
             }
 
