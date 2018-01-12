@@ -32,6 +32,7 @@
         android:layout_alignBottom="@+id/task_edit"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:onClick="completeTask"
         android:text="Mark as Complete" />
 
     <Button

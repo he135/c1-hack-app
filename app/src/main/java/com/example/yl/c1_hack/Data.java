@@ -10,4 +10,8 @@ import java.util.List;
 public class Data {
 
     public static List<Task> tasks = new ArrayList<Task>();
+
+    public static void changeTasks(List<Task> tsk) {
+        tasks = tsk;
+    }
 }

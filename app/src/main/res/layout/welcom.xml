@@ -5,23 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.yl.c1_hack.TaskSetupActivity">
-
-    <!--<Button
-        android:id="@+id/create_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create New Task"/>-->
-
-    <ListView
-    android:id="@+id/list_task"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    tools:context="com.example.yl.c1_hack.MainActivity">
 
     <Button
-        android:id="@+id/home_button"
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home"/>
+        android:text="parent"/>
+
+    <Button
+        android:id="@+id/child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="child"/>
 
 </android.widget.LinearLayout>
