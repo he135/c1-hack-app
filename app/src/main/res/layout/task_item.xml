@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:text="Title"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/task_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/task_title"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="13dp"
+        android:layout_alignParentLeft="true"
+        android:text="Edit" />
+
+    <Button
+        android:id="@+id/task_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/task_edit"
+        android:layout_alignBottom="@+id/task_edit"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Mark as Complete" />
+
+    <Button
+        android:id="@+id/task_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/task_complete"
+        android:layout_alignBottom="@+id/task_complete"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/task_complete"
+        android:layout_alignParentRight="true"
+        android:text="Delete" />
+
+</RelativeLayout>

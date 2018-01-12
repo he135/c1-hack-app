@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TaskSetupActivity" />
-        <activity android:name=".RewardsActivity"></activity>
+        <activity android:name=".RewardsActivity" />
+        <activity android:name=".TaskActivity"></activity>
     </application>
 
 </manifest>

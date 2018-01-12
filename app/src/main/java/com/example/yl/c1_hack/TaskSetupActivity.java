@@ -1,11 +1,25 @@
 package com.example.yl.c1_hack;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.List;
+
 
 public class TaskSetupActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +39,63 @@ public class TaskSetupActivity extends AppCompatActivity {
         findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(TaskSetupActivity.this, TaskActivity.class);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //TODO: update data
+        TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
+        ListView listView = (ListView) findViewById(R.id.list_task);
+        listView.setAdapter(adapter);
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_task:
+                Log.d(TAG, "Add a new task");
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public class TaskAdapter extends ArrayAdapter<Task> {
+        public TaskAdapter(Context context, List<Task> tasks) {
+            super(context, 0, tasks);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Get the data item for this position
+            Task tsk = getItem(position);
+            // Check if an existing view is being reused, otherwise inflate the view
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.task_item, parent, false);
+            }
+            // Lookup view for data population
+            TextView title = (TextView) convertView.findViewById(R.id.task_title);
+            //TextView val = (TextView) convertView.findViewById(R.id.task_value);
+            // Populate the data into the template view using the data object
+            title.setText(tsk.getName());
+            //val.setText("" + tsk.getValue());
+            // Return the completed view to render on screen
+            return convertView;
+        }
     }
 }
