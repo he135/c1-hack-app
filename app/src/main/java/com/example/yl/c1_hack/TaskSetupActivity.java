@@ -43,9 +43,7 @@ public class TaskSetupActivity extends AppCompatActivity {
 
         //weird bug, doesn't show data on first startup
         ListView listView = (ListView) findViewById(R.id.list_task);
-        System.out.println("oncreate before: " + Data.tasks.size());
         adapter = new TaskAdapter(this, Data.tasks);
-        System.out.println("oncreate after: " + Data.tasks.size());
         //TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
         listView.setAdapter(adapter);
         /*findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
@@ -73,9 +71,7 @@ public class TaskSetupActivity extends AppCompatActivity {
         super.onResume();
 
         //TODO: update data
-        System.out.println("onresume before: " + Data.tasks.size());
         adapter.notifyDataSetChanged();
-        System.out.println("onresume after: " + Data.tasks.size());
 
     }
 
