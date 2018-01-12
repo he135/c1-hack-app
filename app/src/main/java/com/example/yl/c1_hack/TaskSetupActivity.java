@@ -2,6 +2,7 @@ package com.example.yl.c1_hack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,6 +45,17 @@ public class TaskSetupActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /*findViewById(R.id.task_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < Data.tasks.length; i++) {
+                    Task curr = Data.tasks.get(i);
+                    if (curr.getName().equals())
+                }
+
+            }
+        });*/
     }
 
     @Override
@@ -53,8 +66,20 @@ public class TaskSetupActivity extends AppCompatActivity {
         TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
         ListView listView = (ListView) findViewById(R.id.list_task);
         listView.setAdapter(adapter);
+    }
 
-
+    public void completeTask(View view) {
+        View parent = (View) view.getParent();
+        TextView title = (TextView) parent.findViewById(R.id.task_title);
+        TextView tview = (TextView) parent.findViewById(R.id.task_complete);
+        Button btn = (Button) parent.findViewById(R.id.task_complete);
+        if (btn.getText().toString().equals("Mark as Complete")) {
+            btn.setText("Mark as Incomplete");
+            title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        } else {
+            btn.setText("Mark as Complete");
+            title.setPaintFlags(tview.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
     }
 
     @Override
@@ -97,5 +122,7 @@ public class TaskSetupActivity extends AppCompatActivity {
             // Return the completed view to render on screen
             return convertView;
         }
+
+
     }
 }
