@@ -8,9 +8,11 @@ public class Task {
     private String name;
     private String description;
     private double value;
-    private int status;
+    private int status; //1 means uncompleted task, 2 means completed, 3 means completed and money was transferred
     private static int counter = 0;
     private int id;
+
+    public Task() {}
 
     public Task(String taskName, String descript, double val) {
         name = taskName;

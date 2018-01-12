@@ -44,7 +44,7 @@ public class TaskActivity extends AppCompatActivity {
 
                 //adding to Firebase
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
-                DatabaseReference ref = db.getReference("" + item.getId());
+                DatabaseReference ref = db.getReference("tasks").child("" + item.getId());
                 ref.setValue(item);
 
                 Data.tasks.add(item);
