@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by Andrew on 1/11/18.
+ */
+
+public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +22,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(MainActivity.this, "Hello", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, TaskSetupActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
-
+//
         findViewById(R.id.rewards_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ChildActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, RewardsActivity.class);
                 startActivity(intent);
             }
         });

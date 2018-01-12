@@ -9,17 +9,24 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 public class RewardsActivity extends AppCompatActivity {
     private static double end_reward;
     private static double begin_reward = 0;
     private boolean saved = false;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+//    DatabaseReference myRef = database.getReference("message");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
         getSupportActionBar().setTitle("Set Reward");
-        final TextView amount = (TextView) findViewById(R.id.amount);
+        final TextView amount = findViewById(R.id.amount);
         amount.setText(Double.toString(end_reward));
         begin_reward = end_reward;
         final EditText e = findViewById(R.id.amount);
@@ -66,5 +73,7 @@ public class RewardsActivity extends AppCompatActivity {
         if(!saved){
             end_reward = begin_reward;
         }
+        DatabaseReference myRef = database.getReference("amount");
+        myRef.setValue(end_reward);
     }
 }
