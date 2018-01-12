@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
 
 dependencies {
@@ -30,6 +34,7 @@ dependencies {
     compile 'com.mashape.unirest:unirest-java:1.4.9'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

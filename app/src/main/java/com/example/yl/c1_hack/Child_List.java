@@ -10,16 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class Child_List extends AppCompatActivity {
@@ -33,49 +27,33 @@ public class Child_List extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Task List");
 
-        ListView listView = (ListView) findViewById(R.id.list_task);
-        TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
-        listView.setAdapter(adapter);
         //weird bug, doesn't show data on first startup
-        DatabaseReference ref = db.getReference("tasks");
+        /*DatabaseReference ref = db.getReference("tasks");
         final List<Task> data = new ArrayList<>();
-        ref.addChildEventListener(new ChildEventListener() {
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Task temp = snapshot.getValue(Task.class);
-                if(temp.getStatus()<2){
-                    data.add(temp);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    Task tsk = snap.getValue(Task.class);
+                    data.add(tsk);
                 }
-                Data.changeTasks(data);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-    }
+        });*/
+        List<Task> data = new ArrayList<>();
+        for (Task t : Data.tasks) {
+            if (t.getStatus() == 1) {
+                data.add(t);
+            }
+        }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
         ListView listView = (ListView) findViewById(R.id.list_task);
+        TaskAdapter adapter = new TaskAdapter(this, data);
         listView.setAdapter(adapter);
     }
 

@@ -16,7 +16,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class TaskSetupActivity extends AppCompatActivity {
         findViewById(R.id.home_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TaskSetupActivity.this, MainActivity.class);
+                Intent intent = new Intent(TaskSetupActivity.this, WelcomeActivity.class);
                 startActivity(intent);
             }
         });
@@ -91,13 +94,41 @@ public class TaskSetupActivity extends AppCompatActivity {
 
             //update status
             final int position = listView.getPositionForView(parent);
-            Task tsk = Data.tasks.get(position);
+            final Task tsk = Data.tasks.get(position);
             tsk.updateStatus(2);
             try {
                 db.getReference("tasks").child("" + tsk.getId()).child("status").setValue(tsk.getStatus());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            db.getReference("accounts").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    MyAccount child = null;
+                    MyAccount parent = null;
+                    for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                        MyAccount temp = snap.getValue(MyAccount.class);
+                        if (temp.getId() == 123) {
+                            parent = temp;
+                        } else if (temp.getId() == 321) {
+                            child = temp;
+                        }
+                    }
+                    if (parent == null || child == null) {
+                        System.out.println("Error");
+                    } else {
+                        parent.transferTo(child, tsk.getValue());
+                        db.getReference("accounts").child("child").setValue(child);
+                        db.getReference("accounts").child("parent").setValue(parent);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // ...
+                }
+            });
             //title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         } else {
             //don't do anything, can't undo completed
@@ -139,15 +170,22 @@ public class TaskSetupActivity extends AppCompatActivity {
             }
             // Lookup view for data population
             TextView title = (TextView) convertView.findViewById(R.id.task_title);
+            TextView tview = (TextView) convertView.findViewById(R.id.task_complete);
             Button complete = (Button) convertView.findViewById(R.id.task_complete);
 
             // Populate the data into the template view using the data object
             title.setText(tsk.getName());
 
             if (tsk.getStatus() != 1) {
+                System.out.println("This has status not one " + tsk.getName() + tsk.getStatus());
                 complete.setText("Completed");
+                complete.setEnabled(false);
+                title.setPaintFlags(tview.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 complete.setText("Mark as Complete");
+                complete.setEnabled(true);
+                title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                System.out.println("This has status of one " + tsk.getName() + tsk.getStatus());
             }
             // Return the completed view to render on screen
             return convertView;

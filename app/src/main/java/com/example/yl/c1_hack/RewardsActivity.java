@@ -2,6 +2,7 @@ package com.example.yl.c1_hack;
 
 //import android.content.Intent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -53,6 +54,8 @@ public class RewardsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saved = true;
+                Intent intent = new Intent(RewardsActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
         findViewById(R.id.minus).setOnClickListener(new View.OnClickListener() {

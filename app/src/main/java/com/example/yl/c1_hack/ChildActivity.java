@@ -12,7 +12,7 @@ public class ChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.child_overview);
-        getSupportActionBar().setTitle("Overview"); //hi what's up
+        getSupportActionBar().setTitle("Child Overview"); //hi what's up
         findViewById(R.id.Child_AR).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -26,7 +26,7 @@ public class ChildActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Change to Child_Account page
-                Intent intent = new Intent(ChildActivity.this, ChildActivity.class);
+                Intent intent = new Intent(ChildActivity.this, ChildAccountActivity.class);
                 startActivity(intent);
             }
         });
