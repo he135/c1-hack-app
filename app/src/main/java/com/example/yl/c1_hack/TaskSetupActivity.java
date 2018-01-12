@@ -52,7 +52,6 @@ public class TaskSetupActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
-
                     Task tsk = snap.getValue(Task.class);
                     data.add(tsk);
                 }

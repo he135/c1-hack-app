@@ -8,15 +8,15 @@
     tools:context="com.example.yl.c1_hack.MainActivity">
 
     <Button
-        android:id="@+id/Parent"
+        android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Parent"/>
+        android:text="parent"/>
 
     <Button
-        android:id="@+id/Child"
+        android:id="@+id/child"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Child"/>
+        android:text="child"/>
 
 </android.widget.LinearLayout>
