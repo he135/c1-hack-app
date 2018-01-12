@@ -37,8 +37,6 @@ public class TaskSetupActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Task List");
 
-
-
         findViewById(R.id.home_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,6 +45,7 @@ public class TaskSetupActivity extends AppCompatActivity {
             }
         });
 
+        //weird bug, doesn't show data on first startup
         DatabaseReference ref = db.getReference("tasks");
         final List<Task> data = new ArrayList<>();
         ref.addValueEventListener(new ValueEventListener() {
@@ -94,7 +93,6 @@ public class TaskSetupActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
-
                     Task tsk = snap.getValue(Task.class);
                     data.add(tsk);
                 }
