@@ -83,7 +83,7 @@ public class TaskSetupActivity extends AppCompatActivity {
 
         //no undo button
         if (btn.getText().toString().equals("Mark as Complete")) {
-            //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child's account'
+            //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child_overview's account'
             btn.setText("Completed");
             btn.setEnabled(false);
             ListView listView = (ListView) findViewById(R.id.list_task);

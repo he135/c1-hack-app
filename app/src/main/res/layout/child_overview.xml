@@ -18,12 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="View Account"/>
-
     <!-- Future implementation -->
     <Button
         android:id="@+id/Child_Task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Task Lists"/>
-
 </android.widget.LinearLayout>
