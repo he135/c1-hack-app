@@ -21,7 +21,7 @@ import java.util.List;
 public class WelcomeActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     FirebaseDatabase db = FirebaseDatabase.getInstance();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
