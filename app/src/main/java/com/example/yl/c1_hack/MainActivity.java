@@ -62,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Task temp = dataSnapshot.getValue(Task.class);
-                if(!Data.tasks.contains(temp)) {
-                    data.add(temp);
-                }
+                data.add(temp);
                 Data.changeTasks(data);
             }
 
