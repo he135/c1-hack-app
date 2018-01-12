@@ -16,19 +16,15 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class TaskSetupActivity extends AppCompatActivity {
     FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static final String TAG = "MainActivity";
+    TaskAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +42,12 @@ public class TaskSetupActivity extends AppCompatActivity {
         });
 
         //weird bug, doesn't show data on first startup
-
+        ListView listView = (ListView) findViewById(R.id.list_task);
+        System.out.println("oncreate before: " + Data.tasks.size());
+        adapter = new TaskAdapter(this, Data.tasks);
+        System.out.println("oncreate after: " + Data.tasks.size());
+        //TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
+        listView.setAdapter(adapter);
         /*findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,21 +66,6 @@ public class TaskSetupActivity extends AppCompatActivity {
 
             }
         });*/
-        DatabaseReference ref = db.getReference("tasks");
-        final List<Task> data = new ArrayList<>();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap: dataSnapshot.getChildren()) {
-                    Task tsk = snap.getValue(Task.class);
-                    data.add(tsk);
-                }
-                Data.changeTasks(data);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) { }
-        });
     }
 
     @Override
@@ -87,9 +73,10 @@ public class TaskSetupActivity extends AppCompatActivity {
         super.onResume();
 
         //TODO: update data
-        TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
-        ListView listView = (ListView) findViewById(R.id.list_task);
-        listView.setAdapter(adapter);
+        System.out.println("onresume before: " + Data.tasks.size());
+        adapter.notifyDataSetChanged();
+        System.out.println("onresume after: " + Data.tasks.size());
+
     }
 
     public void completeTask(View view) {
@@ -97,7 +84,7 @@ public class TaskSetupActivity extends AppCompatActivity {
         TextView title = (TextView) parent.findViewById(R.id.task_title);
         TextView tview = (TextView) parent.findViewById(R.id.task_complete);
         Button btn = (Button) parent.findViewById(R.id.task_complete);
-        
+
         //no undo button
         if (btn.getText().toString().equals("Mark as Complete")) {
             //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child's account'
@@ -156,10 +143,16 @@ public class TaskSetupActivity extends AppCompatActivity {
             }
             // Lookup view for data population
             TextView title = (TextView) convertView.findViewById(R.id.task_title);
-            //TextView val = (TextView) convertView.findViewById(R.id.task_value);
+            Button complete = (Button) convertView.findViewById(R.id.task_complete);
+
             // Populate the data into the template view using the data object
             title.setText(tsk.getName());
-            //val.setText("" + tsk.getValue());
+
+            if (tsk.getStatus() != 1) {
+                complete.setText("Completed");
+            } else {
+                complete.setText("Mark as Complete");
+            }
             // Return the completed view to render on screen
             return convertView;
         }

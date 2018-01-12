@@ -9,7 +9,6 @@ public class Task {
     private String description;
     private double value;
     private int status; //1 means uncompleted task, 2 means completed, 3 means completed and money was transferred
-    private static int counter = 0;
     private int id;
 
     public Task() {}
@@ -19,8 +18,7 @@ public class Task {
         description = descript;
         value = val;
         status = 1;
-        id = counter;
-        counter++;
+        id = Data.tasks.size() + 1; //have to change this later
     }
 
     public double getValue() {

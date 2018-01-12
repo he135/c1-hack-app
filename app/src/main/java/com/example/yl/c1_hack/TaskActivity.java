@@ -46,8 +46,9 @@ public class TaskActivity extends AppCompatActivity {
                 FirebaseDatabase db = FirebaseDatabase.getInstance();
                 DatabaseReference ref = db.getReference("tasks").child("" + item.getId());
                 ref.setValue(item);
-
+                System.out.println("This is the size of Data.tasks first: " + Data.tasks.size());
                 Data.tasks.add(item);
+                System.out.println("This is the size of Data.tasks second: " + Data.tasks.size());
 
                 //return Task
                 Intent intent = new Intent(TaskActivity.this, TaskSetupActivity.class);

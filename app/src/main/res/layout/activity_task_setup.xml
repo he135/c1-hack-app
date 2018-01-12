@@ -22,6 +22,6 @@
         android:id="@+id/home_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back"/>
+        android:text="Home"/>
 
 </android.widget.LinearLayout>
