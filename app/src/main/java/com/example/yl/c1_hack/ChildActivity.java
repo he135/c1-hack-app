@@ -16,7 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ChildActivity extends AppCompatActivity {
-
-
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.child);
+    }
 }
