@@ -14,11 +14,11 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.welcom);
 
         getSupportActionBar().setTitle("Overview"); //hi what's up
 
-        findViewById(R.id.task_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.parent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(MainActivity.this, "Hello", Toast.LENGTH_SHORT).show();
@@ -27,10 +27,10 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 //
-        findViewById(R.id.rewards_button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.child).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, RewardsActivity.class);
+                Intent intent = new Intent(WelcomeActivity.this, ChildActivity.class);
                 startActivity(intent);
             }
         });
