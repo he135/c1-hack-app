@@ -2,6 +2,7 @@ package com.example.yl.c1_hack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,14 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class TaskSetupActivity extends AppCompatActivity {
-
+    FirebaseDatabase db = FirebaseDatabase.getInstance();
     private static final String TAG = "MainActivity";
 
     @Override
@@ -28,6 +34,8 @@ public class TaskSetupActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Task List");
 
+
+
         findViewById(R.id.home_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,13 +44,24 @@ public class TaskSetupActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TaskSetupActivity.this, TaskActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
+
+        /*findViewById(R.id.task_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < Data.tasks.length; i++) {
+                    Task curr = Data.tasks.get(i);
+                    if (curr.getName().equals())
+                }
+
+            }
+        });*/
     }
 
     @Override
@@ -50,11 +69,49 @@ public class TaskSetupActivity extends AppCompatActivity {
         super.onResume();
 
         //TODO: update data
+        DatabaseReference ref = db.getReference();
+        final List<Task> data = new ArrayList<>();
+        /*ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                /*for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    String name = (String) messageSnapshot.child("name").getValue();
+                    String message = (String) messageSnapshot.child("message").getValue();
+                }
+
+                for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                    if (messageSnapshot.getValue(Task.class) != null) {
+                        Task tsk = messageSnapshot.getValue(Task.class);
+                        data.add(tsk);
+                    }
+                }
+                Data.changeTasks(data);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) { }
+        });*/
+
         TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
         ListView listView = (ListView) findViewById(R.id.list_task);
         listView.setAdapter(adapter);
+    }
 
-
+    public void completeTask(View view) {
+        View parent = (View) view.getParent();
+        TextView title = (TextView) parent.findViewById(R.id.task_title);
+        TextView tview = (TextView) parent.findViewById(R.id.task_complete);
+        Button btn = (Button) parent.findViewById(R.id.task_complete);
+        //no undo button
+        if (btn.getText().toString().equals("Mark as Complete")) {
+            //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child's account'
+            btn.setText("Completed");
+            ListView listView = (ListView) findViewById(R.id.list_task);
+            title.setPaintFlags(tview.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            //title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        } else {
+            //don't do anything, can't undo completed
+        }
     }
 
     @Override
@@ -68,6 +125,8 @@ public class TaskSetupActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 Log.d(TAG, "Add a new task");
+                Intent intent = new Intent(TaskSetupActivity.this, TaskActivity.class);
+                startActivity(intent);
                 return true;
 
             default:
@@ -97,5 +156,7 @@ public class TaskSetupActivity extends AppCompatActivity {
             // Return the completed view to render on screen
             return convertView;
         }
+
+
     }
 }

@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TaskActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,11 @@ public class TaskActivity extends AppCompatActivity {
                 }
 
                 Task item = new Task(name, descript, Double.parseDouble(value));
+
+                //adding to Firebase
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                DatabaseReference ref = db.getReference("" + item.getId());
+                ref.setValue(item);
 
                 Data.tasks.add(item);
 
