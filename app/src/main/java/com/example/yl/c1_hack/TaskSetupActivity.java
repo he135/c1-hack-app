@@ -46,21 +46,6 @@ public class TaskSetupActivity extends AppCompatActivity {
         });
 
         //weird bug, doesn't show data on first startup
-        DatabaseReference ref = db.getReference("tasks");
-        final List<Task> data = new ArrayList<>();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap: dataSnapshot.getChildren()) {
-
-                    Task tsk = snap.getValue(Task.class);
-                    data.add(tsk);
-                }
-                Data.changeTasks(data);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) { }
-        });
 
         /*findViewById(R.id.create_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,10 +78,11 @@ public class TaskSetupActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
-                    Task tsk = snap.getValue(Task.class);
-                    data.add(tsk);
+                    System.out.println(snap.getValue(Task.class));
+                    //Task tsk = snap.getValue(Task.class);
+                    //data.add(tsk);
                 }
-                Data.changeTasks(data);
+                //Data.changeTasks(data);
             }
 
             @Override
@@ -117,8 +103,19 @@ public class TaskSetupActivity extends AppCompatActivity {
         if (btn.getText().toString().equals("Mark as Complete")) {
             //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child's account'
             btn.setText("Completed");
+            btn.setEnabled(false);
             ListView listView = (ListView) findViewById(R.id.list_task);
             title.setPaintFlags(tview.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            //update status
+            final int position = listView.getPositionForView(parent);
+            Task tsk = Data.tasks.get(position);
+            tsk.updateStatus(2);
+            /*try {
+                db.getReference("tasks").child("" + tsk.getId()).child("status").setValue("2");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }*/
             //title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         } else {
             //don't do anything, can't undo completed
