@@ -65,6 +65,21 @@ public class TaskSetupActivity extends AppCompatActivity {
 
             }
         });*/
+        DatabaseReference ref = db.getReference("tasks");
+        final List<Task> data = new ArrayList<>();
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+                    Task tsk = snap.getValue(Task.class);
+                    data.add(tsk);
+                }
+                Data.changeTasks(data);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) { }
+        });
     }
 
     @Override
@@ -72,23 +87,6 @@ public class TaskSetupActivity extends AppCompatActivity {
         super.onResume();
 
         //TODO: update data
-        DatabaseReference ref = db.getReference("tasks");
-        final List<Task> data = new ArrayList<>();
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap: dataSnapshot.getChildren()) {
-                    System.out.println(snap.getValue(Task.class));
-                    //Task tsk = snap.getValue(Task.class);
-                    //data.add(tsk);
-                }
-                //Data.changeTasks(data);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) { }
-        });
-
         TaskAdapter adapter = new TaskAdapter(this, Data.tasks);
         ListView listView = (ListView) findViewById(R.id.list_task);
         listView.setAdapter(adapter);
@@ -99,6 +97,7 @@ public class TaskSetupActivity extends AppCompatActivity {
         TextView title = (TextView) parent.findViewById(R.id.task_title);
         TextView tview = (TextView) parent.findViewById(R.id.task_complete);
         Button btn = (Button) parent.findViewById(R.id.task_complete);
+        
         //no undo button
         if (btn.getText().toString().equals("Mark as Complete")) {
             //ideally have an 'are you sure? you cannot undo this action and money will be transferred to your child's account'
@@ -111,11 +110,11 @@ public class TaskSetupActivity extends AppCompatActivity {
             final int position = listView.getPositionForView(parent);
             Task tsk = Data.tasks.get(position);
             tsk.updateStatus(2);
-            /*try {
-                db.getReference("tasks").child("" + tsk.getId()).child("status").setValue("2");
+            try {
+                db.getReference("tasks").child("" + tsk.getId()).child("status").setValue(tsk.getStatus());
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
             //title.setPaintFlags(tview.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         } else {
             //don't do anything, can't undo completed
